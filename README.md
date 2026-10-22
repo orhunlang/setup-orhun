@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/orhunlang/orhun"><img src="https://img.shields.io/badge/Language-Orhun-blue?style=flat-square" alt="Language"></a>
-  <a href="https://github.com/orhunlang/orhun/releases/tag/v0.9.0"><img src="https://img.shields.io/badge/Release-v0.9.0-success?style=flat-square" alt="Latest Release"></a>
+  <a href="https://github.com/orhunlang/orhun/releases/tag/v1.0.0"><img src="https://img.shields.io/badge/Release-v1.0.0-success?style=flat-square" alt="Latest Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-orange?style=flat-square" alt="License"></a>
   <a href="https://github.com/orhunlang/setup-orhun/actions"><img src="https://img.shields.io/github/actions/workflow/status/orhunlang/setup-orhun/test.yml?branch=main&style=flat-square" alt="Build Status"></a>
 </p>
@@ -45,7 +45,7 @@ jobs:
       - name: Setup Orhun
         uses: orhunlang/setup-orhun@v1
         with:
-          orhun-version: '0.9.0'
+          orhun-version: '1.0.0'
 
       - name: Run tests
         run: orhun calistir main.oh
@@ -76,7 +76,7 @@ jobs:
       - name: Setup Orhun
         uses: orhunlang/setup-orhun@v1
         with:
-          orhun-version: '0.9.0'
+          orhun-version: '1.0.0'
 
       - name: Check Version
         run: orhun surum

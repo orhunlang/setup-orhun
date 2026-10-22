@@ -8,9 +8,9 @@ branding:
 
 inputs:
   orhun-version:
-    description: 'The Orhun version to install (e.g. 0.9.0, latest)'
+    description: 'The Orhun version to install (e.g. 1.0.0, latest)'
     required: false
-    default: '0.9.0'
+    default: '1.0.0'
   artifact:
     description: 'The artifact to install: "all" (runtime + compiler), "runtime", or "compiler"'
     required: false

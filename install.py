@@ -82,14 +82,14 @@ def resolve_version(requested: str, token: str | None = None) -> tuple[str, str]
                 return tag.lstrip("v"), tag
         except Exception:
             pass
-        return "0.9.0", "v0.9.0"
+        return "1.0.0", "v1.0.0"
     tag = f"v{clean}" if not requested.startswith("v") else requested
     return clean, tag
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Setup Orhun Language in CI")
-    parser.add_argument("--version", default="0.9.0", help="Orhun version")
+    parser.add_argument("--version", default="1.0.0", help="Orhun version")
     parser.add_argument(
         "--artifact",
         default="all",
