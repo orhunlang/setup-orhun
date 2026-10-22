@@ -1,0 +1,46 @@
+name: 'Setup Orhun Language'
+description: 'Set up an Orhun language programming environment in GitHub Actions and add it to PATH'
+author: 'Orhun Programming Language'
+
+branding:
+  icon: 'terminal'
+  color: 'blue'
+
+inputs:
+  orhun-version:
+    description: 'The Orhun version to install (e.g. 0.9.0, latest)'
+    required: false
+    default: '0.9.0'
+  artifact:
+    description: 'The artifact to install: "compiler" (full toolchain) or "runtime"'
+    required: false
+    default: 'compiler'
+  token:
+    description: 'GitHub token for release API requests'
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  orhun-version:
+    description: 'Installed Orhun version'
+    value: ${{ steps.install.outputs.orhun-version }}
+  orhun-path:
+    description: 'Path to directory containing the Orhun binary'
+    value: ${{ steps.install.outputs.orhun-path }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python for installer
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install Orhun Language
+      id: install
+      shell: bash
+      run: |
+        python3 "${{ github.action_path }}/install.py" \
+          --version "${{ inputs.orhun-version }}" \
+          --artifact "${{ inputs.artifact }}" \
+          --token "${{ inputs.token }}"

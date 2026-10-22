@@ -1,0 +1,40 @@
+name: Test setup-orhun Action
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test-matrix:
+    name: Test on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout setup-orhun action repository
+        uses: actions/checkout@v5
+
+      - name: Run setup-orhun
+        id: setup
+        uses: ./
+        with:
+          orhun-version: '0.9.0'
+          artifact: 'compiler'
+
+      - name: Verify Orhun in PATH
+        shell: bash
+        run: |
+          orhun surum
+          echo "Installed version output: ${{ steps.setup.outputs.orhun-version }}"
+
+      - name: Execute simple Orhun script
+        shell: bash
+        run: |
+          echo 'yazdır "Merhaba Orhun GitHub Actions!"' > test.oh
+          orhun test.oh
