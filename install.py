@@ -151,21 +151,27 @@ def main() -> int:
             return 1
         log(f"Successfully installed {art}: {proc.stdout.strip()}")
 
-    # On Windows, also copy native .exe binaries directly into bin_dir
-    # so Git Bash (bash.exe) can execute 'orhun' as well as CMD/PowerShell.
-    for exe in install_root.rglob("*.exe"):
-        dest = bin_dir / exe.name
-        if not dest.exists():
-            shutil.copy2(exe, dest)
-            log(f"Copied native binary to bin: {dest.name}")
+    # On Windows, copy native .exe binaries directly into bin_dir
+    # and create shell shims for seamless execution in CMD, PowerShell, and Git Bash.
+    if os.name == "nt":
+        for exe in install_root.rglob("*.exe"):
+            dest = bin_dir / exe.name
+            if not dest.exists():
+                shutil.copy2(exe, dest)
+                log(f"Copied native binary to bin: {dest.name}")
+        # Create bash wrappers for Git Bash / MSYS2 compatibility
+        (bin_dir / "orhun").write_text('#!/bin/sh\nexec "$(dirname "$0")/orhun.exe" "$@"\n', encoding="utf-8")
+        (bin_dir / "orhun-derleyici").write_text('#!/bin/sh\nexec "$(dirname "$0")/orhun-derleyici.exe" "$@"\n', encoding="utf-8")
 
     add_to_path(bin_dir)
     set_output("orhun-version", version)
     set_output("orhun-path", str(bin_dir))
 
     # Verify installation
-    log(f"Verifying Orhun in {bin_dir}...")
-    orhun_cmd = "orhun"
+    exe_name = "orhun.exe" if os.name == "nt" else "orhun"
+    candidate = bin_dir / exe_name
+    orhun_cmd = str(candidate) if candidate.exists() else "orhun"
+    log(f"Verifying Orhun in {bin_dir} using {orhun_cmd}...")
     proc = subprocess.run(
         [orhun_cmd, "surum"],
         capture_output=True,
@@ -175,7 +181,8 @@ def main() -> int:
     if proc.returncode == 0:
         log(f"Verified installation: {proc.stdout.strip()}")
     else:
-        log(f"Installation note: {proc.stderr.strip() or proc.stdout.strip()}")
+        error(f"Installation verification failed: {proc.stderr.strip() or proc.stdout.strip()}")
+        return 1
 
     log(f"Orhun v{version} setup successfully completed!")
     return 0
