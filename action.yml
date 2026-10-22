@@ -12,9 +12,9 @@ inputs:
     required: false
     default: '0.9.0'
   artifact:
-    description: 'The artifact to install: "compiler" (full toolchain) or "runtime"'
+    description: 'The artifact to install: "all" (runtime + compiler), "runtime", or "compiler"'
     required: false
-    default: 'compiler'
+    default: 'all'
   token:
     description: 'GitHub token for release API requests'
     required: false
