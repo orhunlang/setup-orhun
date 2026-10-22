@@ -23,7 +23,7 @@
 - 🌍 **Cross-Platform:** Native support for **Ubuntu Linux** (`linux-x64`), **Microsoft Windows** (`windows-x64`), and **macOS** (`macos-arm64`).
 - 🔒 **Cryptographically Verified:** Validates official SHA-256 checksums on all release archives.
 - 🛠️ **Full Toolchain:** Ships with the bytecode virtual machine, self-hosted compiler, and standard library.
-- 📦 **Custom Version Pinning:** Pin to a specific version (`0.9.0`) or always fetch `latest`.
+- 📦 **Custom Version Pinning:** Pin to a specific version (`1.0.1`) or always fetch `latest`.
 
 ---
 
@@ -91,7 +91,7 @@ jobs:
 
 | Input | Description | Required | Default |
 |---|---|---|---|
-| `orhun-version` | Version of Orhun to install (`0.9.0`, `latest`) | No | `0.9.0` |
+| `orhun-version` | Version of Orhun to install (`1.0.1`, `latest`) | No | `1.0.1` |
 | `artifact` | Artifact flavor: `compiler` (full toolchain) or `runtime` | No | `compiler` |
 | `token` | GitHub token for authenticated API requests | No | `${{ github.token }}` |
 
@@ -101,7 +101,7 @@ jobs:
 
 | Output | Description |
 |---|---|
-| `orhun-version` | The resolved installed Orhun version (e.g. `0.9.0`) |
+| `orhun-version` | The resolved installed Orhun version (e.g. `1.0.1`) |
 | `orhun-path` | Absolute filesystem path containing the `orhun` binary |
 
 ---
