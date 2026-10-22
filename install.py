@@ -28,7 +28,6 @@ def set_output(name: str, value: str) -> None:
     if output_file:
         with open(output_file, "a", encoding="utf-8") as f:
             f.write(f"{name}={value}\n")
-    print(f"::set-output name={name}::{value}")
 
 
 def add_to_path(path: Path) -> None:
@@ -152,6 +151,14 @@ def main() -> int:
             return 1
         log(f"Successfully installed {art}: {proc.stdout.strip()}")
 
+    # On Windows, also copy native .exe binaries directly into bin_dir
+    # so Git Bash (bash.exe) can execute 'orhun' as well as CMD/PowerShell.
+    for exe in install_root.rglob("*.exe"):
+        dest = bin_dir / exe.name
+        if not dest.exists():
+            shutil.copy2(exe, dest)
+            log(f"Copied native binary to bin: {dest.name}")
+
     add_to_path(bin_dir)
     set_output("orhun-version", version)
     set_output("orhun-path", str(bin_dir))
@@ -168,7 +175,7 @@ def main() -> int:
     if proc.returncode == 0:
         log(f"Verified installation: {proc.stdout.strip()}")
     else:
-        log(f"Installation verified (check note: {proc.stderr.strip() or proc.stdout.strip()})")
+        log(f"Installation note: {proc.stderr.strip() or proc.stdout.strip()}")
 
     log(f"Orhun v{version} setup successfully completed!")
     return 0
